@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+    <!-- site metas -->
+    <title>Eflyer</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!-- bootstrap css -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/static/css/bootstrap.min.css"
+    />
+    <!-- style css -->
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+    <!-- Responsive-->
+    <link rel="stylesheet" href="/static/css/responsive.css" />
+    <!-- fevicon -->
+    <link rel="icon" href="/static/images/fevicon.png" type="image/gif" />
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" href="/static/css/jquery.mCustomScrollbar.min.css" />
+    <!-- Tweaks for older IEs-->
+    <link
+      rel="stylesheet"
+      href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"
+    />
+    <!-- fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- font awesome -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <!--  -->
+    <!-- owl stylesheets -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Great+Vibes|Poppins:400,700&display=swap&subset=latin-ext"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/owl.carousel.min.css" />
+    <link rel="stylesoeet" href="/static/css/owl.theme.default.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
+      media="screen"
+    />
+  </head>
+
+  <body>
+    <!-- banner bg main start -->
+
+    <!-- banner bg main end -->
+    <!-- fashion section start -->
+    <div class="fashion_section">
+      <div id="main_slider" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="container">
+              <h1 class="fashion_taital">User List</h1>
+
+              <div id="app">
+                <button class="btn btn-primary" @click="showAddUserPopup">
+                  Add User
+                </button>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Position</th>
+                      <th scope="col">Office</th>
+                      <th scope="col">Age</th>
+                      <th scope="col">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(person, index) in VisibleUser" :key="index">
+                      <th scope="row">{{ index + 1 }}</th>
+                      <td>{{ person.Name }}</td>
+                      <td>{{ person.Position }}</td>
+                      <td>{{ person.Office }}</td>
+                      <td>{{ person.Age }}</td>
+                      <td>{{ person.Date }}</td>
+                      <td>
+                        <button @click="editUser(index)">Sửa</button>
+                        <button @click="deleteUser(index)">Xóa</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <nav aria-label="Page navigation">
+                  <ul class="pagination justify-content-center mt-4">
+                    <li class="page-item">
+                      <a
+                        class="page-link"
+                        href="#"
+                        @click="changePage(currentPage - 1)"
+                        :disabled="currentPage === 1"
+                        >Previous</a
+                      >
+                    </li>
+                    <li
+                      class="page-item"
+                      v-for="pageNumber in visiblePageNumbers"
+                      :key="pageNumber"
+                      :class="{active : currentPage == pageNumber || PageNumber === `...`}"
+                    >
+                      <a
+                        href="#"
+                        class="page-link"
+                        @click="changePage(pageNumber)"
+                        >{{ pageNumber }}</a
+                      >
+                    </li>
+
+                    <li class="page-item">
+                      <a
+                        class="page-link"
+                        href="#"
+                        @click="changePage(currentPage + 1)"
+                        :disabled="currentPage === 1"
+                        >Previous</a
+                      >
+                    </li>
+                  </ul>
+                </nav>
+
+                <div v-if="showPopup" class="popup">
+                  <form @submit.prevent="addUser">
+                    <div class="form-group">
+                      <label for="name">Name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        v-model="newUser.Name"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="position">Position</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="position"
+                        v-model="newUser.Position"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="office">Office</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="office"
+                        v-model="newUser.Office"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="age">Age</label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="age"
+                        v-model="newUser.Age"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="date">Date</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="date"
+                        v-model="newUser.Date"
+                      />
+                    </div>
+                    <button type="submit">Submit</button>
+                    <button @click="hideAddUserPopup">CLOSE</button>
+                  </form>
+                </div>
+                <div v-if="showEditPopup" class="popup">
+                  <div class="popup-content">
+                    <h2>Edit User</h2>
+                    <p>Name: {{ editedUser.Name }}</p>
+                    <p>Position: {{ editedUser.Position }}</p>
+                    <p>Office: {{ editedUser.Office }}</p>
+                    <p>Age: {{ editedUser.Age }}</p>
+                    <p>Date: {{ editedUser.Date }}</p>
+
+                    <input v-model="editedUser.Name" placeholder="Name" />
+                    <input
+                      v-model="editedUser.Position"
+                      placeholder="Position"
+                    />
+                    <input v-model="editedUser.Office" placeholder="Office" />
+                    <input v-model="editedUser.Age" placeholder="Age" />
+                    <input v-model="editedUser.Date" placeholder="Date" />
+
+                    <button @click="saveEditedUser">Save</button>
+                    <button @click="closeEditPopup">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/popper.min.js"></script>
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/jquery-3.0.0.min.js"></script>
+    <script src="/static/js/plugin.js"></script>
+    <!-- sidebar -->
+    <script src="/static/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="/static/js/custom.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+      function openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+      }
+
+      function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+      }
+
+      new Vue({
+        el: "#app",
+        data: {
+          showEditPopup: false,
+          newUser: {
+            Name: "",
+            Position: "",
+            Office: "",
+            Age: null,
+            Date: "",
+          },
+          users: [],
+          showPopup: false,
+          itemPerpage: 3,
+          currentPage: 1,
+        },
+        computed: {
+          VisibleUser() {
+            const startPage = (this.currentPage - 1) * this.itemPerpage;
+            const endPage = startPage + this.itemPerpage;
+            return this.users.slice(startPage, endPage);
+          },
+          totalPages() {
+            return Math.ceil(this.users.length / this.itemPerpage);
+          },
+          visiblePageNumbers() {
+            let pageNumber = [];
+            if (this.totalPages <= 7) {
+              for (let i = 1; i <= this.totalPages; i++) {
+                pageNumber.push(i);
+              }
+            } else {
+              if (this.currentPage <= 4) {
+                pageNumber = [1, 2, 3, 4, 5, "...", this.totalPages];
+              } else if (this.currentPage >= this.totalPages - 3) {
+                pageNumber = [
+                  1,
+                  "...",
+                  this.totalPages - 4,
+                  this.totalPages - 3,
+                  this.totalPages - 2,
+                  this.totalPages - 1,
+                  this.totalPages,
+                ];
+              } else {
+                pageNumber = [
+                  1,
+                  "...",
+                  this.currentPage - 1,
+                  this.currentPage,
+                  this.currentPage + 1,
+                  "...",
+                  this.totalPages,
+                ];
+              }
+            }
+            return pageNumber;
+          },
+        },
+        methods: {
+          editUser(index) {
+            this.showEditPopup = true;
+            this.editedUser = { ...this.VisibleUser[index] };
+          },
+          closeEditPopup() {
+            this.showEditPopup = false;
+          },
+          async getUser() {
+            try {
+              const response = await fetch("/users/user-list");
+              const data = await response.json();
+              console.log(data);
+              this.users = data;
+            } catch (error) {
+              console.error("Đã xảy ra lỗi:", error);
+            }
+          },
+          changePage(page) {
+            if (page >= 1 && page <= this.totalPages) {
+              this.currentPage = page;
+            }
+          },
+          showAddUserPopup() {
+            this.showPopup = true;
+          },
+          hideAddUserPopup() {
+            this.showPopup = false;
+          },
+          addUser() {
+            fetch("/users/insert-user", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(this.newUser),
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                console.log("Added user:", data);
+                this.showPopup = false;
+
+                alert("User added successfully!");
+
+                window.location.reload();
+              })
+              .catch((error) => {
+                console.error(
+                  "There was a problem with the add operation:",
+                  error
+                );
+              });
+          },
+          saveEditedUser() {
+            fetch(`/users/update-user/${this.editedUser._id}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(this.editedUser),
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                console.log("Updated user:", data);
+                this.showEditPopup = false;
+
+                alert("Upload successful!");
+
+                window.location.reload();
+              })
+              .catch((error) => {
+                console.error(
+                  "There was a problem with the update operation:",
+                  error
+                );
+              });
+          },
+
+          deleteUser(index) {
+            const userId = this.VisibleUser[index]._id;
+            console.log(userId);
+            fetch(`users/delete-user/${userId}`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                console.log("Deleted user:", data);
+                alert("User deleted successfully!");
+                window.location.reload();
+              })
+              .catch((error) => {
+                console.error(
+                  "There was a problem with the delete operation:",
+                  error
+                );
+              });
+          },
+        },
+        mounted() {
+          this.getUser();
+        },
+      });
+    </script>
+  </body>
+</html>

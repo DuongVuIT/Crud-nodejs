@@ -1,0 +1,38 @@
+<header role="banner" id="fh5co-header">
+  <div class="container">
+    <nav class="navbar navbar-default">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="fh5co-navbar-brand">
+            <a class="fh5co-logo" href="/">Narrow</a>
+          </div>
+        </div>
+        <div class="col-md-9 main-nav">
+          <ul class="nav text-right">
+            <li>
+              <a href="/"><span>Home</span></a>
+            </li>
+            <li><a href="/services">Services</a></li>
+            <li><a href="/products">Products</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $("li a").click(function () {
+      $("li").removeClass("active");
+      $(this).parent().addClass("active");
+    });
+    $("li a").each(function () {
+      if (this.href === window.location.href) {
+        $(this).parent().addClass("active");
+      }
+    });
+  });
+</script>
